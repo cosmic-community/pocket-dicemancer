@@ -10,6 +10,20 @@ interface EnemyDisplayProps {
   damageNumberColor: string;
 }
 
+// Changed: Map enemy names to fallback emojis for when images look off
+const ENEMY_EMOJI_MAP: Record<string, string> = {
+  'Rat': '🐀',
+  'Skeleton': '💀',
+  'Goblin': '👺',
+  'Orc': '👹',
+  'Slime': '🟢',
+  'Spider': '🕷️',
+  'Healer Mage': '🧙',
+  'Dragon': '🐉',
+  'Mimic': '📦',
+  'Wraith': '👻',
+};
+
 export default function EnemyDisplay({
   enemy,
   isShaking,
@@ -21,22 +35,46 @@ export default function EnemyDisplay({
   const hpBarColor =
     hpPercent > 60 ? 'bg-green-500' : hpPercent > 30 ? 'bg-yellow-500' : 'bg-red-500';
 
+  // Changed: Get a fallback emoji based on enemy name
+  const fallbackEmoji = ENEMY_EMOJI_MAP[enemy.name] ?? '👹';
+
   return (
     <div className={`relative ${isShaking ? 'animate-shake' : ''}`}>
       <div className="bg-dungeon-800 rounded-xl p-4 border border-dungeon-600">
-        {/* Enemy name & boss badge */}
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <h3 className={`font-bold ${enemy.isBoss ? 'text-fire' : 'text-white'}`}>
-              {enemy.name}
-            </h3>
-            {enemy.isBoss && (
-              <span className="text-[10px] bg-fire/20 text-fire px-2 py-0.5 rounded-full font-bold">
-                BOSS
-              </span>
+        {/* Changed: Enemy image at top, larger and more prominent */}
+        <div className="flex items-start gap-3 mb-3">
+          {/* Enemy portrait */}
+          <div className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 ${enemy.isBoss ? 'border-fire/60' : 'border-dungeon-500'} bg-dungeon-700`}>
+            {enemy.imageUrl ? (
+              <img
+                src={`${enemy.imageUrl}?w=200&h=200&fit=crop&auto=format,compress`}
+                alt={enemy.name}
+                width={64}
+                height={64}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-2xl">
+                {fallbackEmoji}
+              </div>
             )}
           </div>
-          <span className="text-xs text-gray-400">⚔️ {enemy.damage} DMG</span>
+
+          {/* Enemy info */}
+          <div className="flex-1 min-w-0">
+            {/* Enemy name & boss badge */}
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className={`font-bold truncate ${enemy.isBoss ? 'text-fire' : 'text-white'}`}>
+                {enemy.name}
+              </h3>
+              {enemy.isBoss && (
+                <span className="text-[10px] bg-fire/20 text-fire px-2 py-0.5 rounded-full font-bold flex-shrink-0">
+                  BOSS
+                </span>
+              )}
+            </div>
+            <span className="text-xs text-gray-400">⚔️ {enemy.damage} DMG</span>
+          </div>
         </div>
 
         {/* HP bar */}
@@ -84,19 +122,6 @@ export default function EnemyDisplay({
             )}
           </div>
         </div>
-
-        {/* Enemy image */}
-        {enemy.imageUrl && (
-          <div className="mt-3 flex justify-center">
-            <img
-              src={`${enemy.imageUrl}?w=300&h=200&fit=crop&auto=format,compress`}
-              alt={enemy.name}
-              width={150}
-              height={100}
-              className="rounded-lg w-full max-w-[200px] h-24 object-cover opacity-80"
-            />
-          </div>
-        )}
       </div>
 
       {/* Damage number popup */}
