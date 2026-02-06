@@ -819,7 +819,7 @@ export default function GameBoard({ gameData }: GameBoardProps) {
           </div>
         )}
 
-        {/* Conveyor */}
+        {/* Changed: Conveyor — now passes turn for animation triggers */}
         <ConveyorBelt
           conveyor={state.conveyor}
           onStoreDie={handleStoreDie}
@@ -827,6 +827,7 @@ export default function GameBoard({ gameData }: GameBoardProps) {
             (state.phase === 'store' || state.phase === 'discard') &&
             state.inventory.length < MAX_INVENTORY
           }
+          turn={state.turn}
         />
 
         {/* Inventory */}

@@ -34,6 +34,15 @@ module.exports = {
         'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
         'slide-in': 'slideIn 0.3s ease-out',
         'fade-in': 'fadeIn 0.5s ease-out',
+        // Changed: New conveyor-specific animations
+        'conveyor-track': 'conveyorTrack 2s linear infinite',
+        'conveyor-enter': 'conveyorEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+        'conveyor-idle': 'conveyorIdle 3s ease-in-out infinite',
+        'danger-pulse': 'dangerPulse 1.5s ease-in-out infinite',
+        'danger-glow': 'dangerGlow 1.5s ease-in-out infinite',
+        'chevron-1': 'chevronFlow 1.5s ease-in-out infinite',
+        'chevron-2': 'chevronFlow 1.5s ease-in-out 0.2s infinite',
+        'chevron-3': 'chevronFlow 1.5s ease-in-out 0.4s infinite',
       },
       keyframes: {
         diceRoll: {
@@ -62,6 +71,37 @@ module.exports = {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
+        },
+        // Changed: Conveyor track scrolling animation
+        conveyorTrack: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(42px)' },
+        },
+        // Changed: New die entrance animation with bounce
+        conveyorEnter: {
+          '0%': { transform: 'translateX(-30px) scale(0.6)', opacity: '0' },
+          '60%': { transform: 'translateX(4px) scale(1.05)', opacity: '1' },
+          '100%': { transform: 'translateX(0) scale(1)', opacity: '1' },
+        },
+        // Changed: Subtle idle floating for conveyor dice
+        conveyorIdle: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-2px)' },
+        },
+        // Changed: Danger slot pulse for dice about to fall off
+        dangerPulse: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.04)' },
+        },
+        // Changed: Danger glow ring animation
+        dangerGlow: {
+          '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+          '50%': { opacity: '0.7', transform: 'scale(1.05)' },
+        },
+        // Changed: Chevron flow for direction indicator
+        chevronFlow: {
+          '0%, 100%': { opacity: '0.3', transform: 'translateX(0)' },
+          '50%': { opacity: '1', transform: 'translateX(2px)' },
         },
       },
     },
